@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Publicador</title>
+<link rel="stylesheet" href="<?php echo PLUGIN_URL ?>publisher.css"/>
+</head>
+<body onload="document.getElementById('user-login').focus()">
+<form class="loginForm" method="post">
+	<div class="row">
+		<div class="label">
+			<label>Username</label>
+		</div>
+		<div class="value">
+			<input type="text" name="login" id="user-login"/>
+		</div>
+	</div>
+	<div class="row">
+		<div class="label">
+			<label>Password</label>
+		</div>
+		<div class="value">
+			<input type="password" name="password" id="user-password"/>
+		</div>
+	</div>
+	<div class="row">
+		<div class="value">
+			<button type="submit">Log in</button>
+		</div>
+	</div>
+</form>
+</body>
+</html>

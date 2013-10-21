@@ -1,0 +1,318 @@
+<?php include 'header.html' ?>
+
+<form action="." method="post" autocomplete="off">
+	<div id="container" class="hasRgtCol">
+		<div id="rgtCol">
+			<div class="aside">
+				<div class="version">
+					
+				</div>
+				<div class="actions">
+					<button name="action" class="view" value="preview">Preview (dev)</button>
+					<button name="action" class="save" value="2">Save</button>
+					<button name="action" class="publish" value="1">Publish</button>
+				</div>
+			</div>
+		</div>
+		<div id="midCol">
+			<div id="content">
+<?php
+
+foreach ($metatemplate->modules as $module) {
+	$dms = isset($content->content[$module->name]) ? 
+			(is_numeric(key($content->content[$module->name])) ? 
+				$content->content[$module->name] : array($content->content[$module->name])) 
+				: array(array());
+	
+	$module_i = -1; foreach ($dms as $dm) { $module_i++;
+		
+		echo '<div class="module '. $module->name .'"'.
+				($module->multiple ? 'data-multiple="'. ($module->multiple === true ? '*' : $module->multiple) .'"' : '').
+				'>';
+		
+		if ($module->title)
+			echo '<h2>'. $module->title .'</h2>';
+		
+		foreach ($module->groups as $group) {
+			$dgs = isset($dm[$group->name]) ? 
+					(is_numeric(key($dm[$group->name])) ? 
+						$dm[$group->name] : array($dm[$group->name])) : 
+						array(array());
+			
+			$group_i = -1; foreach ($dgs as $dg) { $group_i++;
+				
+				echo
+				'<div class="group group'. ucfirst($group->name) .'"'.
+					($group->multiple ? 'data-multiple="'. ($group->multiple === true ? '*' : $group->multiple) .'"' : '').
+					'>';
+				
+				if ($group->title)
+					echo '<h3>'. $group->title .'</h3>';
+				
+				echo '<div class="content">';
+				
+				foreach ($group->fields as $field) {
+					$dfs = isset($dg[$field->name]) ? 
+							(is_array($dg[$field->name]) && is_numeric(key($dg[$field->name])) ? 
+								$dg[$field->name] : array($dg[$field->name])) : 
+								array('');
+					
+					$field_i = -1; foreach ($dfs as $value) { $field_i++;
+						
+						$fqn =
+							$module->name . ($module->multiple ? '['. $module_i .']' : '').
+								'['. $group->name .']'. ($group->multiple ? '['. $group_i .']' : '').
+									'['. $field->name .']'. ($field->multiple ? '['. $field_i .']' : '');
+						
+						$fqi =
+							$module->name . ($module->multiple ? '-'.$module_i : '').
+								'_'. $group->name . ($group->multiple ? '-'.$group_i : '').
+									'_'. $field->name . ($field->multiple ? '-'.$field_i : '');
+						
+						if ($value === '')
+							$value = $field->default;
+						
+						$attr = 'name="'. $fqn .'" id="'. $fqi .'"';
+			
+						if (!$field->spellcheck)
+							$attr .= ' spellcheck="false"';
+						
+						if ($field->minlength)
+							$attr .= ' data-minlength="'. $field->minlength .'"';
+						
+						if ($field->maxlength)
+							$attr .= ' data-maxlength="'. $field->maxlength .'"';
+						
+						if ($field->charcount)
+							$attr .= ' data-charcount="true"';
+						
+						echo '<div class="row'. ($field->required ? ' required' : '') .'"'.
+								($field->multiple ? 'data-multiple="'. ($field->multiple === true ? '*' : $field->multiple) .'"' : '').
+								'>';
+						
+						echo
+						'<div class="label">'.
+							'<label>'. $field->title .'</label>'.
+							($field->description ?
+								' <span>'. $field->description .'</span>' : '').
+						'</div>';
+						
+						echo '<div class="value">';
+						
+						switch ($field->type) {
+							case 'text':
+							case 'email':
+							case 'url':
+							case 'number':
+								echo '<input type="'. $field->type .'" '. $attr .' value="'. $value .'"/>';
+								break;
+							
+							case 'textarea':
+								echo '<textarea '. $attr .'>'. $value .'</textarea>';
+								break;
+							
+							case 'html':
+								echo '<textarea name="'. $fqn .'" id="'. $fqi .'" class="htmlarea">'. htmlspecialchars($value) .'</textarea>';
+								break;
+							
+							case 'checkbox':
+								if (count($field->options) > 1)
+									$fqn .= '[]';
+								
+								if (!is_array($value))
+									$value = (array) $value;
+								
+								foreach ($field->options as $option) {
+									echo '<label><input type="checkbox" name="'. $fqn .'"';
+									
+									if (!is_array($option))
+										$option = array($option, $option);
+									elseif (isset($option['name']))
+										$option = array($option['name'], $option['value']);
+									
+									echo ' value="'. $option[0] .'"'. (in_array($option[0], $value) ? ' checked="checked"' : '') .'/> '. $option[1];
+									
+									echo '</label> ';
+								}
+								
+								break;
+							
+							case 'radio':
+								foreach ($field->options as $option) {
+									echo '<label><input type="radio" name="'. $fqn .'"';
+									
+									if (!is_array($option))
+										$option = array($option, $option);
+									elseif (isset($option['name']))
+										$option = array($option['name'], $option['value']);
+									
+									echo 'value="'. $option[0] .'"'. ($option[0] == $value ? ' checked="checked"' : '') .'/> '. $option[1];
+									
+									echo '</label> ';
+								}
+								
+								break;
+							
+							case 'select':
+								echo '<select name="'. $fqn .'" id="'. $fqi .'">';
+								
+								foreach ($field->options as $option) {
+									if (!is_array($option))
+										$option = array($option, $option);
+									elseif ($option['name'])
+										$option = array($option['name'], $option['value']);
+									
+									echo '<option value="'. $option[1] .'"'. ($option[1] == $value ? ' selected="selected"' : '') .'>'. $option[0].'</option>';
+								}
+								
+								echo '</select>';
+								break;
+							
+							case 'file':
+								echo '<input type="text" name="'. $fqn .'" id="'. $fqi .'" data-type="file"/>';
+								break;
+							
+							case 'tags':
+								echo '<input type="text" '. $attr .' value="'. $value .'"/>';
+								break;
+							
+							default:
+								break;
+						}
+						
+						//if ($field->error)
+						//	echo '<div>'. $field->error .'</div>';
+						
+						echo '</div>';
+						
+						echo '</div>';
+					} // field data
+				} // fields
+				
+				echo '</div>'; // content
+				echo '</div>'; // group
+				
+			} // group data
+		} // groups
+		
+		echo '</div>';
+	} // modules data
+} // modules
+
+?>
+				<div class="module correlated">
+					<h2>Correlated (dev)</h2>
+					<div class="group">
+						<h3>Correlated</h3>
+						<div class="content">
+							
+						</div>
+					</div>
+					<div class="group">
+						<h3>All</h3>
+						<div class="content">
+							
+						</div>
+					</div>
+				</div>
+				<?php if ($content->id): ?>
+				<div class="module actions">
+					<h2>Actions</h2>
+					<?php if (is_admin()): ?>
+					<div class="group">
+						<h3>Delete</h3>
+						<div class="content">
+							<div class="row">
+								<div class="label">
+									<label>Novo endereço</label>
+								</div>
+								<div class="value">
+									<input type="text" name=""/>
+								</div>
+								<div>
+									<button name="action" value="delete">Delete</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<?php endif ?>
+					<div class="group">
+						<h3>Rename URL</h3>
+						<div class="content">
+							<div class="row">
+								<div class="label">
+									<label>New URL</label>
+									<span>Digite o novo título que será usado para renomear o endereço</span>
+								</div>
+								<div class="value">
+									<input type="text" name="url" value="<?= $content->url ?>"/>
+									<button name="action" value="URLRename">Rename URL</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<?php if (is_admin()): ?>
+					<div class="group">
+						<h3>Republish</h3>
+						<div class="content">
+							<div class="row">
+								<div class="label">
+									<span>Equivalente ao republicar contido na administração, porém, aqui será republicado apenas este conteúdo.</span>
+								</div>
+								<div class="value">
+									<button name="action" value="republish">Republish</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<?php endif ?>
+				</div>
+				<?php endif ?>
+				<div class="module info">
+					<h2>Information</h2>
+					<div class="group">
+						<h3>Settings</h3>
+						<div class="content">
+							<table>
+								<tbody>
+									<tr>
+										<th>Portal</th>
+										<td><?= $metatemplate->portal ?></td>
+									</tr>
+									<tr>
+										<th>Station</th>
+										<td><?= $metatemplate->station ?></td>
+									</tr>
+									<tr>
+										<th>Channel</th>
+										<td><?= $metatemplate->channel ?></td>
+									</tr>
+									<tr>
+										<th>Title</th>
+										<td><?= $metatemplate->title ?></td>
+									</tr>
+									<tr>
+										<th>Media</th>
+										<td><?= $metatemplate->media->name ?></td>
+									</tr>
+									<tr>
+										<th>Meta-template</th>
+										<td><?= $metatemplate->filename ?></td>
+									</tr>
+									<?php foreach ($metatemplate->export as $name => $export): ?>
+									<tr>
+										<th>Export &quot;<?= $name ?>&quot;</th>
+										<td><?= is_array($export) ? implode(' ', $export) : $export  ?></td>
+									</tr>
+									<?php endforeach ?>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
+
+<?php include 'footer.html' ?>

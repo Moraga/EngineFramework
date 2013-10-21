@@ -1,0 +1,16 @@
+<?php include 'header.html' ?>
+
+<?php if (search('media=post')): ?>
+<div>
+	<?php while (have_results()): ?>
+	<div>
+		<h2><?= $result->title ?></h2>
+		<div><?= $result->text ?></div>
+	</div>
+	<?php endwhile ?>
+	
+	<?= pagination() ?>
+</div>
+<?php endif ?>
+
+<?php include 'footer.html' ?>

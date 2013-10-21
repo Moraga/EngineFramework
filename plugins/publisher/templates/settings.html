@@ -1,0 +1,321 @@
+<?php include 'header.html' ?>
+
+<div id="container">
+	<div id="midCol">
+		<div id="content">
+			<div class="module">
+				<h2>Users</h2>
+				<div class="group">
+					<h3>Add</h3>
+					<div class="content">
+						<form id="userAddForm" method="post">
+							<div class="row">
+								<div class="label">
+									<label for="user-name">Name</label>
+								</div>
+								<div class="value">
+									<input type="text" name="name" id="user-name"/>
+								</div>
+							</div>
+							<div class="row">
+								<div class="label">
+									<label for="user-email">Email</label>
+								</div>
+								<div class="value">
+									<input type="text" name="email" id="user-email"/>
+								</div>
+							</div>
+							<div class="row">
+								<div class="label">
+									<label for="user-username">Username</label>
+								</div>
+								<div class="value">
+									<input type="text" name="username" id="user-username"/>
+								</div>
+							</div>
+							<div class="row">
+								<div class="label">
+									<label for="user-password">Password</label>
+								</div>
+								<div class="value">
+									<input type="password" name="password" id="user-password"/>
+								</div>
+							</div>
+							<div class="row">
+								<div class="value">
+									<button name="action" value="userAdd">Submit</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="group">
+					<h3>Edit</h3>
+					<div class="content">
+						<form id="userEditForm" method="post">
+							<div class="row">
+								<div class="label">
+									<label>Select a user</label>
+								</div>
+								<div class="value">
+									<?= html_select($users, 'id') ?>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="group">
+					<h3>Delete</h3>
+					<div class="content">
+						<form method="post">
+							<div class="row">
+								<div class="label">
+									<label>Select a user</label>
+								</div>
+								<div class="value">
+									<?= html_select($users, 'user') ?>
+								</div>
+							</div>
+							<div class="row">
+								<div class="value">
+									<button name="action" value="userDelete">Delete</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="module">
+				<h2>Groups</h2>
+				<div class="group">
+					<h3>Add</h3>
+					<div class="content">
+						<form id="groupAddForm" method="post">
+							<div class="row">
+								<div class="label">
+									<label for="group-name">Group name</label>
+								</div>
+								<div class="value">
+									<input type="text" name="name" id="group-name"/>
+									<?= '' ?>
+								</div>
+							</div>
+							<div class="row">
+								<div class="checkList">
+									<?= html_checkbox($metatemplates, 'rules[metatemplate][]') ?>
+								</div>
+							</div>
+							<div class="row">
+								<div class="value">
+									<button name="action" value="groupAdd">Submit</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="group">
+					<h3>Edit</h3>
+					<div class="content">
+						<form id="groupEditForm" method="post">
+							<div class="row">
+								<div class="label">
+									<label>Select a group</label>
+								</div>
+								<div class="value">
+									<?= html_select($groups, 'id') ?>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="group">
+					<h3>Delete</h3>
+					<div class="content">
+						<form id="groupDeleteForm" method="post">
+							<div class="row">
+								<div class="label">
+									<label>Select a group</label>
+								</div>
+								<div class="value">
+									<?= html_select($groups, 'id') ?>
+								</div>
+							</div>
+							<div class="row">
+								<div class="value">
+									<button name="action" value="groupDelete">Delete</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="module">
+				<h2>Meta-template</h2>
+				<div class="group">
+					<h3>Update</h3>
+					<div class="content">
+						<form method="post">
+							<div class="row">
+								<div class="label">
+									<label>Select a meta-template</label>
+								</div>
+								<div class="value">
+									<?= html_select($metatemplates, 'metatemplate') ?>
+								</div>
+							</div>
+							<div class="row">
+								<div class="value">
+									<button name="action" value="metaTemplateUpdate">Submit</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="group">
+					<h3>Delete</h3>
+					<div class="content">
+						<form method="post">
+							<div class="row">
+								<div class="label">
+									<label>Select a meta-template</label>
+								</div>
+								<div class="value">
+									<?= html_select($metatemplates, 'metatemplate') ?>
+								</div>
+							</div>
+							<div class="row">
+								<div class="value">
+									<button name="action" value="metaTemplateDelete">Delete</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="module">
+				<h2>Media</h2>
+				<div class="group">
+					<h3>Update</h3>
+					<div class="content">
+						<form method="post">
+							<div class="row">
+								<div class="label">
+									<label>Select a media</label>
+								</div>
+								<div class="value">
+									<?= html_select($medias, 'media') ?>
+								</div>
+							</div>
+							<div class="row">
+								<div class="value">
+									<button name="action" value="mediaUpdate">Submit</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="module">
+				<h2>Republish</h2>
+				<div class="group">
+					<h3>By meta-template</h3>
+					<div class="content">
+						<form method="post">
+							<div class="row">
+								<div class="label">
+									<label>Select a meta-template</label>
+								</div>
+								<div class="value">
+									<?= html_select($metatemplates, 'metatemplate') ?>
+								</div>
+							</div>
+							<div class="row">
+								<div class="value">
+									<button name="action" value="republish">Republish</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="group">
+					<h3>By media</h3>
+					<div class="content">
+						<form method="post">
+							<div class="row">
+								<div class="label">
+									<label>Select a media</label>
+								</div>
+								<div class="value">
+									<?= html_select($medias, 'media') ?>
+								</div>
+							</div>
+							<div class="row">
+								<div class="value">
+									<button name="action" value="republish">Republish</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+window.onload = function() {
+
+(function() {
+	var add  = $('#userAddForm'),
+		edit = $('#userEditForm'),
+		base = null;
+
+	$('[name=id]', edit).change(function() {
+		if (!base) {
+			base = add.clone(false).children();
+			base.find('[name=action]').val('userEdit');
+			edit.append(base);
+		}
+		else {
+			base.reset();
+		}
+		
+		$.ajax({
+			url: PUBLISHER +'load/user',
+			data: {id: this.value},
+			success: function(data) {
+				edit.populate(data);
+			}
+		})
+	});
+})();
+
+(function() {
+	var add  = $('#groupAddForm'),
+		edit = $('#groupEditForm'),
+		base = null;
+
+	$('[name=id]', edit).change(function() {
+		if (!base) {
+			base = add.clone(false).children();
+			base.find('[name=action]').val('groupEdit');
+			edit.append(base);
+		}
+		else {
+			base.reset();
+		}
+		
+		$.ajax({
+			url: PUBLISHER +'load/group',
+			data: {id: this.value},
+			success: function(data) {
+				edit.populate(data);
+			}
+		});
+	});
+})();
+
+}
+</script>
+
+<?php include 'footer.html' ?>

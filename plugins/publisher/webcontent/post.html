@@ -1,0 +1,12 @@
+<?php include 'header.html'  ?>
+
+<article>
+	<h1><?= $post->content->title ?></h1>
+	<h4>By <?= $post->content->author ?></h4>
+	
+	<div>
+		<?= $post->content->text ?>
+	</div>
+</article>
+
+<?php include 'footer.html' ?>

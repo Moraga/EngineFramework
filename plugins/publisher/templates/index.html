@@ -1,0 +1,22 @@
+<?php include 'header.html' ?>
+
+<div id="container" class="hasRgtCol clearfix">
+	<div id="rgtCol">
+		<div class="aside"></div>
+	</div>
+	<div id="midCol">
+		<div id="content">
+			<?php foreach ($medias as $media): ?>
+			<div id="<?= $media->name ?>" class="module">
+				<h2><?= $media->title ?></h2>
+				<div class="group" data-focus="false" data-open="publisher.loadmt">
+					<h3>All <input type="text"/></h3>
+					<div class="content"></div>
+				</div>
+			</div>
+			<?php endforeach ?>
+		</div>
+	</div>
+</div>
+
+<?php include 'footer.html' ?>

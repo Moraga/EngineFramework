@@ -1,0 +1,16 @@
+body {font-family:Arial, sans-serif;}
+
+header, nav, main, footer {margin:0 auto; max-width:980px;}
+
+nav {background:#4d4d4d;}
+nav ul {margin:0; padding:0;}
+nav li {display:inline-block;}
+nav a {color:#fff; display:inline-block; padding:9px 15px;}
+
+main {clear:both; margin-bottom:60px;}
+main:after {clear:both; content:" "; display:block; height:0; visibility:hidden;}
+
+article {float:left; width:70%;}
+aside {float:left; width:30%;}
+
+footer {color:#999;}

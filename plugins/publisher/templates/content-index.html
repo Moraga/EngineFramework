@@ -1,0 +1,57 @@
+<?php include 'header.html' ?>
+
+<div id="container" class="hasRgtCol clearfix">
+	<div id="rgtCol">
+		<div class="aside">
+			
+		</div>
+	</div>
+	<div id="midCol">
+		<div id="content">
+			<div class="module open">
+				<a class="addButton" href="add/">Add</a>
+				<form class="searchForm" action="." method="get">
+					<div class="searchFormSubmit">
+						<button type="submit">Search</button>
+					</div>
+					<div class="searchFormInput">
+						<input type="text" name="q" autocomplete="off"/>
+					</div>
+				</form>
+				<h2><?= $metatemplate->media->title ?></h2>
+				<div class="group">
+					<?php if ($index->rows): ?>
+					<?php while ($item = $index->fetch()): ?>
+					<div class="entry">
+						<a href="<?= $item->content_id ?>/">
+							<div class="entryCreated"><?= $item->created ?></div>
+							<div class="entryTitle"><?= $item->title ? $item->title : '<em>(No title)</em>' ?></div>
+						</a>
+					</div>
+					<?php endwhile ?>
+					<?php else: ?>
+					<p>Empty</p>
+					<?php endif ?>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<style>
+.entry {margin-bottom:5px;}
+.entryCreated {float:left; margin-right:10px;}
+.entryTitle {font-weight:bold; font-family:Georgia;}
+
+.addButton {background:#7ec169; border:1px solid #6aa45c; border-radius:3px; box-shadow:inset 1px 1px 0 rgba(255, 255, 255, .5); color:#fff; display:block; float:right; font-weight:bold; margin-top:3px; margin-left:20px; padding:1px 10px;}
+.addButton:active {box-shadow:none;}
+
+.searchForm {float:right; margin-top:3px;}
+.searchFormSubmit {float:right;}
+.searchFormSubmit button {background:#ddd; border:0; color:#666; font-size:10px; height:20px; line-height:20px; text-transform:uppercase; width:56px;}
+.searchFormInput {margin-right:61px;}
+.searchFormInput input {background:transparent; box-sizing:border-box; padding:1px 2px; width:100%;}
+.searchFormInput input:focus {background:#fff; box-shadow:inset 0 1px 1px rgba(0, 0, 0, .075);}
+</style>
+
+<?php include 'footer.html' ?>

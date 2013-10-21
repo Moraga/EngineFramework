@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Publisher</title>
+<link rel="stylesheet" href="<?= PLUGIN_URL ?>publisher.css"/>
+</head>
+<body class="<?= strtr($filename, '/.', '_-') ?>">
+<?= report() ?>
+<div id="main">
+	<div id="head" class="clearfix">
+		<div id="logo"></div>
+		<div id="headNav" class="clearfix">
+			<ul id="topMenu">
+				<li id="topMenuUser" class="navItem">
+					<a class="navLink"><?= $user->name ?></a>
+					<ul class="subMenu">
+						<?php if (is_admin()): ?>
+						<li class="subNavItem">
+							<a class="subNavLink" href="<?= PUBLISHER_ABSURL ?>settings">Administration</a>
+						</li>
+						<li class="subNavItem">
+							<a class="subNavLink">Doc (dev)</a>
+						</li>
+						<?php endif ?>
+						<li class="subNavItem">
+							<a class="subNavLink" href="<?= PUBLISHER_ABSURL ?>logout">Log out</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+			<ul id="topNav">
+				<li id="topNavHome" class="navItem">
+					<a class="navLink" href="<?= PUBLISHER_ABSURL ?>">Home</a>
+				</li>
+				<li id="topNavSearch" class="navItem">
+					<a class="navLink">Search (dev)</a>
+				</li>
+				<?php if (isset($breadcrumbs)): ?>
+				<li id="topNavCrumbs" class="navItem">
+					<a class="navLink"><?= $breadcrumbs ?></a>
+				</li>
+				<?php endif ?>
+			</ul>
+		</div>
+	</div>
+	<div id="body">

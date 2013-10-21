@@ -1,0 +1,23 @@
+	</div>
+	<div id="foot">
+		
+	</div>
+</div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="<?= URL ?>engine.js"></script>
+<script src="<?= PLUGIN_URL ?>publisher.js"></script>
+<script>
+var PUBLISHER = '<?= PUBLISHER_ABSURL ?>';
+
+// init
+$('.module').each(function() {
+	publisher.module($(this));
+});
+
+if ((report = $('.report')).length)
+	window.setTimeout(function() {
+		report.remove();
+	}, 7000);
+</script>
+</body>
+</html>
