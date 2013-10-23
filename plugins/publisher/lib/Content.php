@@ -40,6 +40,12 @@ class Content {
 	public $url;
 	
 	/**
+	 * Content meta-template
+	 * @var string
+	 */
+	public $metatemplate;
+	
+	/**
 	 * Gets a Content by id or URL
 	 * @param int|string $id Content id or URL
 	 * @param boolean $assoc Content data as associative array

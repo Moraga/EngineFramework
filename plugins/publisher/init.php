@@ -36,7 +36,7 @@ foreach (glob(PUBLISHER_METATEMPLATE .'*') as $filename) {
 	$metatemplate = parse_metatemplate_file($filename);
 	
 	// admin index and edit URLs
-	$urls[ PUBLISHER_URL .'('. $metatemplate->name . ')/'] = '.init.publisher_content_index';
+	$urls[ PUBLISHER_URL .'('. $metatemplate->name . ')/'] = '.init.publisher_content_list';
 	$urls[ PUBLISHER_URL .'('. $metatemplate->name . ')/(add|\d+)/'] = '.init.publisher_content_edit';
 	
 	$metatemplates[$metatemplate->name] = $metatemplate;
@@ -62,95 +62,32 @@ function publisher_home() {
 }
 
 /**
- * Open/view content
+ * Open/view a content
  * @param string $request
  */
 function publisher_content($request) {
-	require 'lib/template.php';
+	global $js, $css;
 	
-	global $db, $metatemplates;
-	
-	// finds the content
-	$content = Content::instance($request);
-	
-	if ($content && $content->status == 1) {
-		$metatemplate = $metatemplates[$content->metatemplate];
-	
-		// identifing template
-		foreach ($metatemplate->export as $export) {
-			if (isset($export['url']) && $export['url'] == '' || strpos($request, $export['url']) === 0) {
-				$template = $export['template'];
-				break;
-			}
-		}
-		
-		// imports content variables to current scope
-		extract((array) $content->content);
-	}
-	else {
-		// directory index
-		if (!$request)
-			$request = 'index.html';
-		
-		if (file_exists(PUBLISHER_WEBCONTENT . $request)) {
-			switch (strrchr($request, '.')) {
-				// javascript
-				case '.js':
-					//require_once LIB .'minify_js.php';
-					
-					header('Content-Type: application/javascript; charset=utf-8');
-					//minify_js(..
-					break;
-				
-				// css
-				case '.css':
-					require_once LIB .'minify_css.php';
-					
-					header('Content-Type: text/css; charset=utf-8');
-					//header('Expires:..
-					echo minify_css(PUBLISHER_WEBCONTENT . $request);
-					exit;
-				
-				// images
-				case '.jpg':
-				case '.gif':
-				case '.png':
-					$ext = substr(strrchr($request, '.'), 1);
-					
-					header('Content-Type: image/' . ($ext == 'jpg' ? 'jpeg' : $ext));
-					readfile(PUBLISHER_WEBCONTENT . $request);
-					exit;
-				
-				default:
-					break;
-			}
-			
-			$template = $request;
-		}
-		else {
-			header('HTTP/1.0 404 Not Found');
-			exit;
-		}
-	}
+	$js  = array();
+	$css = array();
 	
 	ini_set('include_path', PUBLISHER_WEBCONTENT);
 	
-	$css = array();
-	$js  = array();
+	// tries to get the content
+	// if not found, returns 404
+	if (!$content = publisher_content_get($request)) {
+		header('HTTP/1.0 404 Not Found');
+		exit('<h1>Not Found</h1>');
+	}
 	
-	$ob = ob_start();
-	include $template;
-	$body = ob_get_contents();
-	ob_end_clean();
-	
-	$css = array_unique($css);
 	$js  = array_unique($js);
-	
-	foreach ($css as &$filename)
-		$filename = '<link rel="stylesheet" href="'. $filename .'"/>';
+	$css = array_unique($css);
 	
 	foreach ($js  as &$filename)
 		$filename = '<script src="'. $filename .'"></script>';
+	
+	foreach ($css as &$filename)
+		$filename = '<link rel="stylesheet" href="'. $filename .'"/>';
 	
 	echo str_replace(
 		array(
@@ -161,14 +98,120 @@ function publisher_content($request) {
 			implode("\n", $css)."\n</head>",
 			implode("\n", $js )."\n</body>",
 		),
-	$body);
+	$content);
+}
+
+/**
+ * Gets a content from meta-template/database or filesystem
+ * @param string|int $id Content id, url or filename
+ * @param string $metatemplate A meta-template for content from meta-template
+ * @param string $export The export for meta-template
+ * @return string|false
+ */
+function publisher_content_get($id, $metatemplate='', $export='') {
+	static $loaded = array();
+	
+	// prevents infinite loop
+	if (isset($loaded[$id . $metatemplate . $export]))
+		return '';
+	else
+		$loaded[$id . $metatemplate . $export] = true;
+	
+	global $metatemplates, $js, $css;
+	
+	// from meta-template/database
+	if ($content = Content::instance($id)) {
+		if ($content->status != 1 || !$content->metatemplate && !$metatemplate)
+			return false;
+		
+		$metatemplate = $metatemplates[$metatemplate ? $metatemplate : $content->metatemplate];
+		
+		if ($export) {
+			$file = $metatemplate->export[$export]['template'];
+		}
+		else {
+			foreach ($metatemplate->export as $export) {
+				if (isset($export['url']) && $export['url'] == '' || strpos($id, $export['url']) === 0) {
+					$file = $export['template'];
+					break;
+				}
+			}
+		}
+		
+		extract((array) $content->content);
+	}
+	// from filesystem
+	else {
+		if ($id == '')
+			$id = 'index.html';
+		
+		if (file_exists(PUBLISHER_WEBCONTENT . $id)) {
+			switch (strrchr($id, '.')) {
+				case '.js':
+					header('Content-Type: application/javascript; charset=utf-8');
+					//header('Expires:..
+					
+					// minifies the js
+					//echo minify_js(PUBLISHER_WEBCONTENT . $id);
+					break;
+			
+				case '.css':
+					require_once LIB .'minify_css.php';
+					
+					header('Content-Type: text/css; charset=utf-8');
+					//header('Expires:..
+					
+					// minifies the css
+					echo minify_css(PUBLISHER_WEBCONTENT . $id);
+					exit; // nothing else is needed
+				
+				case '.jpg':
+				case '.gif':
+				case '.png':
+					// gets the file extension
+					$ext = substr(strrchr($request, '.'), 1);
+					
+					header('Content-Type: image/' . ($ext == 'jpg' ? 'jpeg' : $ext));
+					readfile(PUBLISHER_WEBCONTENT . $request);
+					exit; // nothing else is needed
+				
+				default:
+					break;
+			}
+			
+			$file = $id;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	ob_start();
+	include $file;
+	$content = ob_get_contents();
+	ob_end_clean();
+	
+	// parses the content:
+	// 1) loads the modules (recursively)
+	$content = preg_replace_callback('#\s+data-module="([^\.]+)\.([^"]+)"([^>]*>)([^<]+)#', 'publisher_content_re_module', $content);
+	
+	return $content;
+}
+
+/**
+ * Receives the matches from preg_replace and imports the contents required
+ * @param array $matches
+ * @return string
+ */
+function publisher_content_re_module($matches) {
+	return $matches[3]. publisher_content_get($matches[4], $matches[1], $matches[2]);
 }
 
 /**
  * Meta-template content index
  * @param string $metatempate
  */
-function publisher_content_index($metatemplate) {
+function publisher_content_list($metatemplate) {
 	if (!is_auth())
 		publisher_login();
 	elseif (!is_allowed($metatemplate))
@@ -229,7 +272,7 @@ function publisher_content_edit($metatemplate, $id) {
 				require_once 'lib/content_save.php';
 				require_once 'lib/content_url.php';
 				require_once 'lib/content_publish.php';
-				require_once 'lib/media_content_save.php';
+				require_once 'lib/content_index.php';
 				
 				// takes the action as status
 				$content->status = $_POST['action'];
