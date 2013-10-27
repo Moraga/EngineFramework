@@ -7,7 +7,7 @@ ini_set('display_errors', 1);
 error_reporting(-1);
 
 define('DIR', dirname(__FILE__) .'/');
-define('URL', dirname($_SERVER['PHP_SELF']) .'/');
+define('URL', substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], '/') + 1));
 
 require DIR .'lib/Writer.php';
 
