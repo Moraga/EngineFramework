@@ -23,7 +23,7 @@ function minify_css($css) {
 	// remove tabs and new lines
 	$re['#[\t\r\n]+#'] = '';
 
-	return preg_replace(array_keys($re), $re, file_get_contents($css));
+	return preg_replace(array_keys($re), $re, $css);
 }
 
 ?>
