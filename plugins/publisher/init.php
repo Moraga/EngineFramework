@@ -161,8 +161,13 @@ function publisher_content_get($id, $metatemplate='', $export='') {
 					header('Content-Type: text/css; charset=utf-8');
 					//header('Expires:..
 					
+					ob_start();
+					include $id;
+					$content = ob_get_contents();
+					ob_end_clean();
+					
 					// minifies the css
-					echo minify_css(PUBLISHER_WEBCONTENT . $id);
+					echo minify_css($content);
 					exit; // nothing else is needed
 				
 				case '.jpg':
