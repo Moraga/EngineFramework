@@ -11,6 +11,9 @@
 			url: '',
 			template: 'post.html'
 		},
+		embed: {
+			template: 'post-embed.html'
+		}
 	},
 	
 	modules: {
