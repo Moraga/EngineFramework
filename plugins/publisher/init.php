@@ -1,6 +1,5 @@
 <?php
 
-require_once LIB .'json_decode_relaxed.php';
 require_once LIB .'report.php';
 require $plugindir .'lib/default.php';
 require $plugindir .'lib/Media.php';
