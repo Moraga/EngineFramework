@@ -71,7 +71,8 @@ CREATE TABLE content_url (
 	FOREIGN KEY (content_id) REFERENCES content(id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
-CREATE TABLE content_index (
+CREATE TABLE content_admin (
+	media VARCHAR(30) NOT NULL,
 	portal VARCHAR(30) NOT NULL,
 	station VARCHAR(30) NOT NULL,
 	channel VARCHAR(30) NOT NULL,
@@ -79,7 +80,7 @@ CREATE TABLE content_index (
 	title VARCHAR(255) NOT NULL,
 	status TINYINT UNSIGNED NOT NULL,
 	created DATETIME NOT NULL,
-	PRIMARY KEY (portal, station, channel, content_id),
+	PRIMARY KEY (media, portal, station, channel, content_id),
 	FOREIGN KEY (content_id) REFERENCES content(id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 

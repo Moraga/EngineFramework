@@ -142,7 +142,8 @@ function publisher_content_save(MetaTemplate $metatemplate, Content $content, $r
 		
 		// admin index
 		$db->execute("
-			REPLACE content_index SET
+			REPLACE content_admin SET
+				media = '{$metatemplate->media->name}',
 				portal = '{$metatemplate->portal}',
 				station = '{$metatemplate->station}',
 				channel = '{$metatemplate->channel}',
