@@ -226,6 +226,7 @@ function publisher_content_list($metatemplate) {
 	$metatemplate = $metatemplates[$metatemplate];
 	
 	$index = new Search(array(
+		'admin'		=> true,
 		'media'		=> $metatemplate->media->name,
 		'portal'	=> $metatemplate->portal,
 		'station'	=> $metatemplate->station,
