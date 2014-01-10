@@ -9,7 +9,7 @@ function meta_json_ext($data) {
 	foreach ($data as $key => $val) {
 		if ('import' === $key) {
 			$path = explode('::', $val);
-			$extd = json_decode_relaxed(file_get_contents(PUBLISHER_METATEMPLATE. $path[0]), true);
+			$extd = json_decode(file_get_contents(PUBLISHER_METATEMPLATE. $path[0]), true);
 			
 			// slice
 			if (isset($path[1]))
@@ -38,8 +38,8 @@ function meta_json_ext($data) {
  * @return Media
  */
 function parse_media_file($filename) {
-	$media = cast(meta_json_ext(json_decode_relaxed(file_get_contents($filename), true)), 'Media');
-	$media->name = basename($filename, '.js');
+	$media = cast(meta_json_ext(json_decode(file_get_contents($filename), true)), 'Media');
+	$media->name = basename($filename, '.json');
 	return $media;
 }
 
@@ -51,14 +51,14 @@ function parse_media_file($filename) {
 function parse_metatemplate_file($filename) {
 	global $medias;
 	
-	$data = meta_json_ext(json_decode_relaxed(file_get_contents($filename), true));
+	$data = meta_json_ext(json_decode(file_get_contents($filename), true));
 	
 	$mt = new MetaTemplate;
 	$mt->portal = $data['portal'];
 	$mt->station = $data['station'];
 	$mt->channel = $data['channel'];
 	$mt->media = $medias[$data['media']];
-	$mt->name = basename($filename, '.js');
+	$mt->name = basename($filename, '.json');
 	$mt->filename = substr($filename, strlen(DIR));
 	$mt->title = $data['title'];
 	$mt->override = !empty($data['override']);
