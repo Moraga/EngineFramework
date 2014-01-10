@@ -12,6 +12,7 @@ class Search extends GenericSearch {
 	function __construct($options=array(), $url='.', $params_prefix=null) {
 		// default parameters
 		$params = array(
+			'admin'		=> '',
 			'media'		=> '', // Media / repository
 			'fields'	=> '', // Fields
 			'portal'	=> '',
@@ -33,19 +34,29 @@ class Search extends GenericSearch {
 		$params = array_merge($params, array_intersect_key($options, $params));
 		
 		$expr  = array('*');
-		$table = array($params['media']);
+		$table = array();
 		$where = array();
 		$order = array();
 		$group = array();
 		
+		if ($params['admin']) {
+			$table[] = 'content_admin A';
+			
+			if ($params['media'])
+				$where[] = "A.media = '{$params['media']}'";
+		}
+		else {
+			$table[] = $params['media'] .' A';
+		}
+		
 		if ($params['portal'])
-			$where[] = "portal = '{$params['portal']}'";
+			$where[] = "A.portal = '{$params['portal']}'";
 		
 		if ($params['station'])
-			$where[] = "station = '{$params['station']}'";
+			$where[] = "A.station = '{$params['station']}'";
 		
 		if ($params['channel'])
-			$where[] = "channel = '{$params['channel']}'";
+			$where[] = "A.channel = '{$params['channel']}'";
 		
 		if ($params['keywords']) {
 			$params['keywords'] = preg_split_recursive('#\s*,\s*#', (array) $params['keywords']);
@@ -56,12 +67,16 @@ class Search extends GenericSearch {
 				break;
 			
 			default:
-				return;
+				break;
 		}
 		
 		// sort
 		if ($params['srt'])
-			$order[] = 'created DESC';
+			$order[] = 'A.created DESC';
+		
+		// get content url
+		$table[0] .= ' LEFT JOIN content_url B ON A.content_id = B.content_id';
+		$extr[] = 'B.url';
 		
 		parent::__construct(
 			implode(', ', $expr),
