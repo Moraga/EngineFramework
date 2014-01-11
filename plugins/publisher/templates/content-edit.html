@@ -86,24 +86,27 @@ foreach ($metatemplate->modules as $module) {
 						if ($field->charcount)
 							$attr .= ' data-charcount="true"';
 						
-						echo '<div class="row'. ($field->required ? ' required' : '') .'"'.
-								($field->multiple ? 'data-multiple="'. ($field->multiple === true ? '*' : $field->multiple) .'"' : '').
-								'>';
-						
-						echo
-						'<div class="label">'.
-							'<label>'. $field->title .'</label>'.
-							($field->description ?
-								' <span>'. $field->description .'</span>' : '').
-						'</div>';
-						
-						echo '<div class="value">';
+						if ($field->type != 'hidden') {
+							echo '<div class="row'. ($field->required ? ' required' : '') .'"'.
+									($field->multiple ? 'data-multiple="'. ($field->multiple === true ? '*' : $field->multiple) .'"' : '').
+									'>';
+							
+							echo
+							'<div class="label">'.
+								'<label>'. $field->title .'</label>'.
+								($field->description ?
+									' <span>'. $field->description .'</span>' : '').
+							'</div>';
+							
+							echo '<div class="value">';
+						}
 						
 						switch ($field->type) {
 							case 'text':
 							case 'email':
 							case 'url':
 							case 'number':
+							case 'hidden':
 								echo '<input type="'. $field->type .'" '. $attr .' value="'. $value .'"/>';
 								break;
 							
@@ -112,7 +115,7 @@ foreach ($metatemplate->modules as $module) {
 								break;
 							
 							case 'html':
-								echo '<textarea name="'. $fqn .'" id="'. $fqi .'" class="htmlarea">'. htmlspecialchars($value) .'</textarea>';
+								echo '<textarea name="'. $fqn .'" id="'. $fqi .'" class="html">'. htmlspecialchars($value) .'</textarea>';
 								break;
 							
 							case 'checkbox':
@@ -183,9 +186,12 @@ foreach ($metatemplate->modules as $module) {
 						//if ($field->error)
 						//	echo '<div>'. $field->error .'</div>';
 						
-						echo '</div>';
-						
-						echo '</div>';
+						if ($field->type != 'hidden') {
+							// closes .value
+							echo '</div>';
+							// closes .row
+							echo '</div>';
+						}
 					} // field data
 				} // fields
 				
