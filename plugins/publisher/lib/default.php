@@ -58,7 +58,7 @@ function parse_metatemplate_file($filename) {
 	$mt->station = $data['station'];
 	$mt->channel = $data['channel'];
 	$mt->media = $medias[$data['media']];
-	$mt->name = basename($filename, '.json');
+	$mt->name = str_replace(array(PUBLISHER_METATEMPLATE, '.json'), '', $filename);
 	$mt->filename = substr($filename, strlen(DIR));
 	$mt->title = $data['title'];
 	$mt->override = !empty($data['override']);

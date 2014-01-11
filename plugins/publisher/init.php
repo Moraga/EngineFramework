@@ -33,7 +33,7 @@ foreach (glob(PUBLISHER_MEDIA .'*') as $filename) {
 }
 
 // loads the meta-templates
-foreach (glob_recursive(PUBLISHER_METATEMPLATE .'*') as $filename) {
+foreach (glob_recursive(PUBLISHER_METATEMPLATE .'*.*') as $filename) {
 	$metatemplate = parse_metatemplate_file($filename);
 	
 	// admin index and edit URLs
