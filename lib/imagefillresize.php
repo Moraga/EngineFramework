@@ -30,10 +30,10 @@ function imagefillresize($filename, $width, $height, $destination=null, $fill_co
 	$type = $finfo['mime'];
 	
 	// original width
-	$src_w = $finfo[0];
+	$src_width = $finfo[0];
 	
 	// original height
-	$src_h = $finfo[1];
+	$src_height = $finfo[1];
 	
 	// direction
 	$dir = '';
@@ -42,10 +42,10 @@ function imagefillresize($filename, $width, $height, $destination=null, $fill_co
 	$ratio = 0;
 	
 	// new width
-	$dst_w = 0;
+	$dst_width = 0;
 	
 	// new height
-	$dst_h = 0;
+	$dst_height = 0;
 	
 	// margin left
 	$x = 0;
@@ -64,7 +64,7 @@ function imagefillresize($filename, $width, $height, $destination=null, $fill_co
 		$dir = 'width';
 		
 		// vertical image
-		if ($src_h > $src_w)
+		if ($src_height > $src_width)
 			$dir = 'height';
 	}
 	// vertical context
@@ -72,11 +72,11 @@ function imagefillresize($filename, $width, $height, $destination=null, $fill_co
 		$dir = 'height';
 		
 		// horizontal image
-		if ($src_w > $src_h)
+		if ($src_width > $src_height)
 			$dir = 'width';
 	}
 	
-	if ($$dir / ${"src_$dir"} * ${$dir == 'width' ? 'src_h' : 'src_w'} > ${$dir == 'width' ? 'height' : 'width'})
+	if ($$dir / ${"src_$dir"} * ${$dir == 'width' ? 'src_height' : 'src_width'} > ${$dir == 'width' ? 'height' : 'width'})
 		$dir = $dir == 'width' ? 'height' : 'width';
 	
 	$ratio = $$dir / ${"src_$dir"};
@@ -86,16 +86,16 @@ function imagefillresize($filename, $width, $height, $destination=null, $fill_co
 		$ratio = $max_ratio;
 	
 	// calculates the width and height of the new image
-	$dst_w = $src_w * $ratio;
-	$dst_h = $src_h * $ratio;
+	$dst_width = $src_width * $ratio;
+	$dst_height = $src_height * $ratio;
 	
 	// adjusts margin left
-	if ($width > $dst_w)
-		$x = floor(($width - $dst_w) / 2);
+	if ($width > $dst_width)
+		$x = floor(($width - $dst_width) / 2);
 	
 	// adjusts margin top
-	if ($height > $dst_h)
-		$y = floor(($height - $dst_h) / 2);
+	if ($height > $dst_height)
+		$y = floor(($height - $dst_height) / 2);
 	
 	// creates the new true color image
 	$dst = imagecreatetruecolor($width, $height);
@@ -104,7 +104,7 @@ function imagefillresize($filename, $width, $height, $destination=null, $fill_co
 	imagefill($dst, 0, 0, $fill_color);
 	
 	// copy source image to true color image
-	imagecopyresampled($dst, $src, $x, $y, 0, 0, $dst_w, $dst_h, $src_w, $src_h);
+	imagecopyresampled($dst, $src, $x, $y, 0, 0, $dst_width, $dst_height, $src_width, $src_height);
 	
 	// outputs the new image
 	if (!$destination)
