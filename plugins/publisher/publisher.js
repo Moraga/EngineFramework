@@ -116,21 +116,34 @@ publisher.loadmt = function() {
 	var self = this;
 	
 	if (!self.data('loaded')) {
-		self.find('h3 input').on('keyup', function() {
-			var srch = engine.unaccent(this.value).toLowerCase();
-			
-			console.log(srch);
-			
-			$(this).parents('.group').find('.link').each(function() {
-				console.log($(this).text())
-				
-				$(this)[engine.unaccent($(this).text()).toLowerCase().indexOf(srch) != -1 ? 'show' : 'hide']();
+		self.find('h3 input')
+			.on('keyup', function(event) {
+				switch (event.which) {
+					// enter
+					case 13:
+						if (mt = $(this).parents('.group').find('.itemLink:visible').get(0))
+							window.location = mt.href;
+						break;
+					
+					// esc
+					case 27:
+						this.value = '';
+						$(this).parents('.group').find('.itemLink').show();
+						this.blur();
+						break;
+					
+					default:
+						var srch = new RegExp(engine.unaccent(this.value).replace(/\s+/, '.*'), 'i')
+						$(this).parents('.group').find('.itemLink').each(function() {
+							$(this)[srch.test(engine.unaccent($(this).text())) ? 'show' : 'hide']();
+						});
+						break;
+				}
+			})
+			.on('click', function(event) {
+				if (self.hasClass('open'))
+					event.stopPropagation();
 			});
-		}).on('click', function(event) {
-			if (self.hasClass('open'))
-				event.stopPropagation();
-			console.log('preventing!');
-		});
 	}
 	
 	$.ajax({
