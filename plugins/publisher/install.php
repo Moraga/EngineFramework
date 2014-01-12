@@ -101,7 +101,16 @@ $onsuccess[] = 'createdirs';
 function createdirs() {
 	// create upload dir and enable resize handler
 	mkdir(UPLOAD_DIR, 0777, true);
-	file_put_contents(UPLOAD_DIR .'index.php', '<?php require "'. LIB .'imageresizehandler.php" ?>');
+	
+	$depth = count(explode('/', $_POST['UPLOAD_DIR']));
+	
+	file_put_contents(UPLOAD_DIR .'index.php',
+		'<?php require '.
+			str_repeat('dirname(', $depth). '__FILE__' . str_repeat(')', $depth) .'.'.
+			"'/lib/imageresizehandler.php'".
+		' ?>'
+	);
+	
 	file_put_contents(UPLOAD_DIR .'.htaccess',
 		"RewriteEngine On\n".
 		"RewriteCond %{REQUEST_FILENAME} !-f\n".
