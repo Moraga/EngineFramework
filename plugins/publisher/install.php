@@ -96,6 +96,19 @@ CREATE TABLE file (
 
 E;
 
+$onsuccess[] = 'createdirs';
+
+function createdirs() {
+	// create upload dir and enable resize handler
+	mkdir(UPLOAD_DIR, 0777, true);
+	file_put_contents(UPLOAD_DIR .'index.php', '<?php require "'. LIB .'imageresizehandler.php" ?>');
+	file_put_contents(UPLOAD_DIR .'.htaccess',
+		"RewriteEngine On\n".
+		"RewriteCond %{REQUEST_FILENAME} !-f\n".
+		"RewriteRule . index.php [L]\n"
+	);
+}
+
 $onsuccess[] = 'gotoadmin';
 
 function gotoadmin() {
