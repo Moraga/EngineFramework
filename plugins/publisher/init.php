@@ -110,6 +110,8 @@ function publisher_content($request) {
  * @return string|false
  */
 function publisher_content_get($id, $metatemplate='', $export='') {
+	require_once 'lib/template.php';
+	
 	static $loaded = array();
 	
 	// prevents infinite loop
