@@ -33,7 +33,7 @@ class Search extends GenericSearch {
 		// merges params and options preserving keys and order
 		$params = array_merge($params, array_intersect_key($options, $params));
 		
-		$expr  = array('*');
+		$expr  = array('A.*');
 		$table = array();
 		$where = array();
 		$order = array();
@@ -76,7 +76,7 @@ class Search extends GenericSearch {
 		
 		// get content url
 		$table[0] .= ' LEFT JOIN content_url B ON A.content_id = B.content_id';
-		$extr[] = 'B.url';
+		$expr[] = 'B.url';
 		
 		parent::__construct(
 			implode(', ', $expr),
