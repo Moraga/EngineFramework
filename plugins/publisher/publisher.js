@@ -121,21 +121,21 @@ publisher.loadmt = function() {
 				switch (event.which) {
 					// enter
 					case 13:
-						if (mt = $(this).parents('.group').find('.itemLink:visible').get(0))
+						if (mt = $(this).parents('.group').find('.item:visible .itemLink').get(0))
 							window.location = mt.href;
 						break;
 					
 					// esc
 					case 27:
 						this.value = '';
-						$(this).parents('.group').find('.itemLink').show();
+						$(this).parents('.group').find('.item').show();
 						this.blur();
 						break;
 					
 					default:
-						var srch = new RegExp(engine.unaccent(this.value).replace(/\s+/, '.*'), 'i')
+						var srch = new RegExp(engine.unaccent(this.value).replace(/\s+/g, '.*'), 'i')
 						$(this).parents('.group').find('.itemLink').each(function() {
-							$(this)[srch.test(engine.unaccent($(this).text())) ? 'show' : 'hide']();
+							$(this).parent()[srch.test(engine.unaccent($(this).text())) ? 'show' : 'hide']();
 						});
 						break;
 				}
