@@ -524,17 +524,21 @@ function publisher_login() {
 	if (is_auth())
 		return header('Location: '. PUBLISHER_ABSURL);
 	
+	$err = '';
+	
 	if ($_POST) {
 		if (auth_login($_POST)) {
 			header('Location: '. $_SERVER['REQUEST_URI']);
 			exit;
 		}
 		else {
-			echo 'Username or password invalid';
+			$err = 'Username or password invalid';
 		}
 	}
 	
-	template('login.html');
+	template('login.html', array(
+		'err' => $err,
+	));
 	
 	exit;
 }
