@@ -118,12 +118,12 @@ function upload_dir($str) {
 }
 
 function upload_url($str) {
-	return (substr($str, 0, 1) == '/' || strpos($str, ':') ? '' : 'URL . ') ."'". endslash($str) ."'";
+	return ($str && substr($str, 0, 1) != '/' && strpos($str, ':') === false ? 'URL . ' : '') ."'". endslash($str) ."'";
 }
 
 function content_url($str) {
 	return $str == URL ? 'URL' :
-			(substr($str, 0, 1) == '/' || strpos($str, ':') ? '' : 'URL . ') ."'". endslash($str) ."'";
+			($str && substr($str, 0, 1) != '/' && strpos($str, ':') === false ? 'URL . ' : '') ."'". endslash($str) ."'";
 }
 
 function createdirs() {

@@ -136,7 +136,7 @@ function db_port($v) {
 }
 
 function endslash($str) {
-	return $str . (substr($str, -1) != '/' ? '/' : '');
+	return $str . ($str && substr($str, -1) != '/' ? '/' : '');
 }
 
 ?>
