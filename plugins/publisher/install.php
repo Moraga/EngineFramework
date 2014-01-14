@@ -8,15 +8,30 @@ $fields  += array(
 	'UPLOAD_DIR' => array(
 		'Upload dir',
 		'default'	=> 'upload/',
-		'apply'		=> 'endslash',
-		'php'		=>
-			"define('UPLOAD_DIR', DIR . '%');\n".
-			"define('UPLOAD_URL', URL . '%');"
+		'apply'		=> 'upload_dir',
+		'php'		=> "define('UPLOAD_DIR', %);",
+	),
+	
+	'UPLOAD_URL' => array(
+		'Upload URL',
+		'default'	=> 'upload/',
+		'apply'		=> 'upload_url',
+		'php'		=> "define('UPLOAD_URL', %);",
 	),
 	
 	'UPLOAD_ORD' => array(
 		'Archiving files: date or combinatory',
 		'default'	=> 'date',
+	),
+);
+
+$fields[] = 'Content';
+$fields  += array(
+	'CONTENT_URL' => array(
+		'Content URL',
+		'default'	=> URL,
+		'apply'		=> 'content_url',
+		'php'		=> "define('CONTENT_URL', %);",
 	),
 );
 
@@ -97,6 +112,19 @@ CREATE TABLE file (
 E;
 
 $onsuccess[] = 'createdirs';
+
+function upload_dir($str) {
+	return (substr($str, 0, 1) == '/' ? '' : 'DIR . ') . "'". endslash($str) ."'";
+}
+
+function upload_url($str) {
+	return (substr($str, 0, 1) == '/' || strpos($str, ':') ? '' : 'URL . ') ."'". endslash($str) ."'";
+}
+
+function content_url($str) {
+	return $str == URL ? 'URL' :
+			(substr($str, 0, 1) == '/' || strpos($str, ':') ? '' : 'URL . ') ."'". endslash($str) ."'";
+}
 
 function createdirs() {
 	// create upload dir and enable resize handler

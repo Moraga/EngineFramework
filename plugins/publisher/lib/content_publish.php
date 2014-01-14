@@ -64,7 +64,7 @@ function publisher_content_publish(MetaTemplate $metatemplate, Content $content)
 				foreach($matches[1] as $k => $t)
 					$repl[$matches[0][$k]] = ($value = array_key_value($t, $urldata)) ? strtourl(current((array) $value)) : $t;
 				
-				$url = str_replace(array_keys($repl), $repl, $url);
+				$url = CONTENT_URL . str_replace(array_keys($repl), $repl, $url);
 			}
 			
 			publisher_content_url($metatemplate, $content, $url);

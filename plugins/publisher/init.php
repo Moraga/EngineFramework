@@ -76,7 +76,7 @@ function publisher_content($request) {
 	
 	// tries to get the content
 	// if not found, returns 404
-	if (!$content = publisher_content_get($request)) {
+	if (!$content = publisher_content_get(CONTENT_URL . $request)) {
 		header('HTTP/1.0 404 Not Found');
 		exit('<h1>Not Found</h1>');
 	}
