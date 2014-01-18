@@ -76,7 +76,7 @@ function publisher_content($request) {
 	
 	// tries to get the content
 	// if not found, returns 404
-	if (!$content = publisher_content_get(CONTENT_URL . $request)) {
+	if (!$content = publisher_content_get($request)) {
 		header('HTTP/1.0 404 Not Found');
 		exit('<h1>Not Found</h1>');
 	}
@@ -123,7 +123,7 @@ function publisher_content_get($id, $metatemplate='', $export='') {
 	global $metatemplates, $js, $css;
 	
 	// from meta-template/database
-	if ($content = Content::instance($id)) {
+	if ($content = Content::instance(CONTENT_URL . $id)) {
 		if ($content->status != 1 || !$content->metatemplate && !$metatemplate)
 			return false;
 		
