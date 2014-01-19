@@ -69,7 +69,7 @@ class Content {
 			$query = "
 				SELECT A.metatemplate, B.status, B.content
 				FROM `content_url` A, `content` B
-				WHERE A.id = MD5('{$id}') AND B.id = A.content_id AND status = 1
+				WHERE A.id = '".  md5($id) ."' AND B.id = A.content_id AND status = 1
 				LIMIT 1
 			";
 		}
