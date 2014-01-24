@@ -123,7 +123,7 @@ function publisher_content_get($id, $metatemplate='', $export='') {
 	global $metatemplates, $js, $css;
 	
 	// from meta-template/database
-	if ($content = Content::instance(CONTENT_URL . $id)) {
+	if ($content = Content::instance((is_numeric($id) ? '' : CONTENT_URL) . $id)) {
 		if ($content->status != 1 || !$content->metatemplate && !$metatemplate)
 			return false;
 		
@@ -212,7 +212,16 @@ function publisher_content_get($id, $metatemplate='', $export='') {
  * @return string
  */
 function publisher_content_re_module($matches) {
-	return $matches[3]. publisher_content_get($matches[4], $matches[1], $matches[2]);
+	if (!is_numeric($matches[4]) && CONTENT_URL) {
+		// remove domain
+		if (strpos(CONTENT_URL, '//') === false && strpos($matches[4], '//') !== false)
+			$matches[4] = preg_replace('#[^/]*//[^/]+#', '', $matches[4]);
+		
+		// remove CONTENT_URL
+		$matches[4] = substr($matches[4], strpos($matches[4], CONTENT_URL) + strlen(CONTENT_URL));
+	}
+	
+	return $matches[3] . publisher_content_get($matches[4], $matches[1], $matches[2]);
 }
 
 /**
