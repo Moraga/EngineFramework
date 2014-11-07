@@ -1,0 +1,145 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+
+body {direction:ltr; margin:0; padding:0; text-align:left;}
+body, table, button, input, select, textarea {font-family:'Segoe UI', Tahoma, Helvetica, Arial, sans-serif; font-size:13px;}
+form {margin:0; padding:0;}
+button {margin:0;}
+input, textarea {border:1px solid #fff; -moz-box-sizing:border-box; -webkit-box-sizing:border-box; box-sizing:border-box; margin:0; padding:3px 3px 3px 4px; width:80%;}
+input[type=checkbox], input[type=radio] {border:0; margin:0 1px 0 0; padding:0; position:relative; top:1px; width:auto;}
+select {border:1px solid #fff; -moz-box-sizing:border-box; -webkit-box-sizing:border-box; box-sizing:border-box; margin:0; padding:2px 2px 2px 0; width:80%;}
+a {color:#fff; cursor:pointer; text-decoration:none;}
+ul {list-style-type:none; margin:0; padding:0;}
+
+.clearfix {zoom:1;}
+.clearfix:after {clear:both; content:'.'; display:block; font-size:0; height:0; line-height:0; visibility:hidden;}
+
+#head {height:46px; margin:0 1% 10px;}
+#head a {color:#333;}
+
+#headNav {}
+
+#topMenu {float:right; font-size:16px; padding-top:4px;}
+#topMenu .navItem {border:solid transparent; border-width:2px 2px 0; float:left; position:relative;}
+#topMenu .navItem:hover {border-color:#ddd;}
+#topMenu .navLink {display:block; padding:10px;}
+#topMenu .navItem:hover .navLink {background:#fff; position:relative; z-index:2;}
+#topMenu .subMenu {background:#fff; border:2px solid #ddd; display:none; margin-top:-2px; position:absolute; top:100%; left:-2px; width:100%; z-index:1;}
+#topMenu .navItem:hover .subMenu {display:block;}
+#topMenu .subNavItem {}
+#topMenu .subNavLink {border-left:5px solid transparent; display:block; padding:2px 5px;}
+#topMenu .subNavLink:hover {background:#C9E4F1; border-color:#95D0ED;}
+
+#topNav {font-size:18px; padding-top:13px;}
+#topNav .navItem {float:left; margin-right:2%;}
+#topNav .navLink:hover {color:#999; transition:all .5s;}
+#topNavHome {}
+#topNavSearch {}
+#topNavCrumbs {overflow:hidden;}
+#topNavCrumbs .navLink {background:#fff; position:absolute; white-space:nowrap;}
+#topNavCrumbs .navLink span {color:#bbb;}
+
+#body {}
+
+#container {}
+
+#lftCol {margin:0 1%;}
+#rgtCol {}
+#midCol {margin:0 0 0 1%;}
+#content {float:left; width:100%;}
+
+.hasLftCol #lftCol {float:left;}
+
+.hasRgtCol #rgtCol {position:fixed; top:56px; bottom:8px; left:79%; width:20%;}
+.hasRgtCol #midCol {width:78%;}
+.hasRgtCol > #content {width:78%;}
+
+.aside {height:100%;}
+.aside .actions button {background:#ebebeb; border:3px solid #ebebeb; color:#555; margin-bottom:2%; padding:10% 0; width:100%;}
+.aside .actions button:hover {border-color:#ccc;}
+.aside .actions button:active {border-color:#666; outline:none;}
+.aside .actions .view {}
+.aside .actions .save {}
+.aside .actions .publish {}
+
+.module {background:#2c6190; color:#fff; float:left; margin:0 1% 1% 0; padding:0 1%; width:30.333%;}
+.module h2 {cursor:default; font:21px 'Open Sans', 'Segoe UI', Tahoma, Helvetica, Arial; margin:0; padding:12% 0; white-space:nowrap;}
+
+.group {display:none; margin-bottom:2%; padding:0 1%;}
+.group h3 {cursor:default; margin:0; padding:1% 0;}
+.group h3 input {display:none;float:right; opacity:.5; width:20%;}
+.group.focus {background:rgba(255, 255, 255, .1);}
+
+.content {display:none; padding:0 2% 1%;}
+
+.item {padding:.3% 0;}
+.itemAdd {background:rgba(0, 0, 0, .2); border:1px solid #fff; display:none; font-size:9px; float:right; padding:.3% 1%; text-transform:uppercase;}
+.item:hover .itemAdd {display:block;}
+.itemLink {}
+.itemLink span {color:#ddd;}
+
+.module.open {clear:both; float:none; padding-bottom:.1px; width:96.999%;}
+.module.open h2 {padding:2% 0;}
+.module.open .group {display:block;}
+
+.group.open .content {display:block;}
+
+.row {padding:5px 0; position:relative;}
+.row .label {margin-bottom:2px;}
+.row .label label {font-weight:bold;}
+.row .label span {color:#ddd;}
+.row .label span:before {color:#c0c0c0; content:'\2022'; font-weight:bold; margin-right:3px;}
+.row .value {}
+.row .value label {display:inline-block; margin-right:5px; margin-bottom:3px; white-space:nowrap;}
+.row .value .htmlarea {height:240px;}
+.row .counter {float:right; margin-top:4px;}
+.row .counter.outrange {color:red;}
+.row.required {}
+.row.required .label:before {color:#ff6d72; content:'\2022'; font-weight:bold; position:absolute; left:-8px;}
+.row.error {border:1px solid #ff6d72;}
+
+.btnFile {display:inline; overflow:hidden; position:relative;}
+.btnFile input {filter:alpha(opacity=0); opacity:0; font-size:50px; margin:0; padding:0; position:absolute; top:0; left:0;}
+.btnFile label {color:#2518b5; display:inline-block; padding:3px; text-decoration:underline;}
+input + .btnFile {margin-left:3px;}
+
+.checkList {background:#fff; border:1px solid #c0c0c0; color:#222; max-height:300px; padding:7px 0; overflow:auto; width:80%;}
+.checkList label {display:block; padding:0 10px;}
+
+.module:nth-child(2) {background:#90a930;}
+.module:nth-child(3) {background:#714a28;}
+.module:nth-child(4) {background:#e58600;}
+.module:nth-child(5) {background:#bf3a00;}
+.module:nth-child(6) {background:#8260b2;}
+
+.module.actions {}
+.module.correlated {}
+.module.info {background:#393144;}
+.module.info table {border-collapse:collapse; border-spacing:0; margin:1% 0; width:100%;}
+.module.info th, .module.info td {border:1px dotted #c0c0c0; padding:3px 5px;}
+.module.info th {text-align:right;}
+
+.report {position:fixed; top:1%; left:30%; text-align:center; width:40%; text-shadow:1px 1px 1px rgba(0, 0, 0, .1); z-index:11;}
+.report div {color:#333; display:inline-block; padding:0 8px 4px;}
+.report-1 div {background:#f9edbe;}
+.report-2 div {background:#c00; color:#fff;}
+
+.login-html {background:#2c6190; color:#fff;}
+.login-html form {margin-left:-180px; position:absolute; top:34%; left:50%; width:360px;}
+.login-html .label label {font:14px 'Open Sans';}
+.login-html button {background:#1FAEFF; border:0; color:#fff; font-size:11px; margin-top:5px; width:70px; height:25px; text-transform:uppercase;}
+.login-html input {width:100%;}
+
+@media all and (max-width:600px) {
+	input, select, textarea {width:88%;}
+	
+	.hasRgtCol #rgtCol {float:none; margin:0 0 0 1%; position:relative; top:0; left:0; width:99%;}
+	.hasRgtCol #midCol {width:99%;}
+	
+	.aside .actions button {float:left; margin:0 1% 1% 0; padding:2% 0; width:32.333%;}
+	
+	.module {width:47%;}
+}
+
+@media all and (max-width:480px) {
+	.module {width:96.999%;}
+}
